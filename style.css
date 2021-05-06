@@ -1,0 +1,29 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+#dom-tree{
+    border-top: 1px solid black;
+    margin-top: 40px;
+}
+
+
+.toolTip{
+    max-width: 50%;
+    max-height: 25%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: gray;
+    color: white;
+    padding: 20px;
+    overflow: auto;
+    display: none;
+    overflow-wrap: break-word;
+    overflow-y: auto;
+}
+
+#download{
+    display: none;
+}
