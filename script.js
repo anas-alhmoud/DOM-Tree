@@ -83,9 +83,26 @@ function drawAttributtsButton(x, y) {
 }
 
 function showToolTip(node) {
-    var ele = document.querySelector(".toolTip")
-    ele.style.display = "block"
-    ele.innerText = node.dom.outerHTML;
+    Invalidate()
+
+    let maxWidth = canvas.clientWidth;
+    let pad = maxWidth * (0.5 / 100)
+    let y = 42; 
+    let arr = node.dom.outerHTML.split("\n");
+    let longestLine = arr.reduce((r, e) => r.length < e.length ? e : r, "");
+    context.font = "15px Arial";
+    let width = context.measureText(longestLine).width + pad + 10
+    context.textAlign="left"
+    context.beginPath();
+    context.rect(pad, y-pad, width, arr.length*40/1.5 + pad*2);
+    context.fillStyle = "rgba(0,0,0,0.5)"
+    context.fill();
+    context.beginPath();
+    context.fillStyle = "white"
+    for (let i = 0; i < arr.length; i++) {
+        context.fillText(arr[i], pad*2, y + 10, width);
+        y+= 40/1.5           
+    }
 }
 
 function hideToolTip() {
@@ -133,7 +150,7 @@ canvas.addEventListener("mousemove", function (e) {
     if (context.isPointInPath(nodePath, XY.x, XY.y)) {
         loopOverNodes(XY.x, XY.y, nodeMouseOver)
     } else {
-        hideToolTip()
+        Invalidate();
     }
 });
 
