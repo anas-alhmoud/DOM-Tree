@@ -2,7 +2,7 @@ let canvas = document.querySelector('canvas')
 let context = canvas.getContext("2d")
 
 var nodes = [];
-var DOM = document.getElementById("html");
+var DOM = document.querySelector("html");
 var currentMoving = null;
 
 
@@ -219,14 +219,45 @@ function attributtsButtonClicked(x, y, node) {
 
     if (node instanceof Node)
         if (node.dom.hasAttributes() && node.AttributtsButtonContains(x, y)) {
-            let msg = ""
-            for (var i = 0; i < node.dom.attributes.length; i++) {
-                var attrib = node.dom.attributes[i];
-                msg += attrib.name + " = " + attrib.value + "\n";
-            }
-            alert(msg)
+            drawAttributes(node.dom.attributes, x, y)
         }
 }
+
+function drawAttributes(attributes, x, y) {
+    let axiX = x - 80;
+    let axiY = y + 20;
+    for (let i = 0; i < attributes.length; i++) {
+
+        let arr = attributes[i].nodeName.split("\n");
+        let longestLine = arr.reduce((r, e) => r.length < e.length ? e : r, "");
+        let width = context.measureText(longestLine).width + 20
+        context.beginPath();
+        context.fillStyle = "lightblue";
+        context.rect(axiX, axiY, width, 20);
+        context.fillRect(axiX, axiY, width, 20);
+        context.fillStyle = "black";
+        context.textAlign = "center"
+        context.textBaseline = "middle"
+        context.fillText(attributes[i].nodeName, axiX + width/2, axiY + 10);
+
+        context.fillStyle = "lightsalmon";
+        var oldW = width;
+        arr = attributes[i].nodeValue.split("\n");
+        longestLine = arr.reduce((r, e) => r.length < e.length ? e : r, "");
+        width = context.measureText(longestLine).width + 20
+        
+        context.rect(axiX + oldW, axiY, width, 20);
+        context.fillRect(axiX + oldW, axiY, width, 20);
+
+        context.fillStyle = "black";
+        context.fillText(attributes[i].nodeValue, axiX + oldW + width/2, axiY + 10);
+
+        context.stroke();
+
+        axiY += 30;
+
+    }
+  }
 
 function textBoxClicked(x, y, node) {
 
